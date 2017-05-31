@@ -35,6 +35,8 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
+
+    # player is the ai player, not opponent (i.e. max player)
     raise NotImplementedError
 
 
@@ -214,6 +216,53 @@ class MinimaxPlayer(IsolationPlayer):
 
         return game.get_legal_moves()[0]
 
+        ### return move from legal_moves with max score from min_value(forecast_move(game, move))
+        #
+        # from operator import itemgetter
+        #
+        # legal_moves = game.get_legal_moves()
+        # scores = [min_value(forecast_move(game, move)) for move in legal_moves]
+        # return max( list(zip(legal_moves,scores)), key=itemgetter[1] )[0]
+
+
+        # from operator import itemgetter
+        #
+        # legal_moves = game.get_legal_moves()
+        # # utilValues = self.min_value(legal_moves, depth)
+        # utilValues = game.get_legal_moves()
+        # return max( list(zip(legal_moves,utilValues)), key=itemgetter[1] )[0]
+
+    def min_value(self, state, depth):
+        """ Helper function used in minimax algorithm.
+        Parameters
+            state : isolation.Board
+                An instance of the Isolation game `Board` class representing the
+                current game state
+            depth : int
+                Depth is an integer representing the maximum number of plies to
+                search in the game tree before aborting
+        Returns
+            (int) : utility value of the given state
+        """
+
+        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+        pass
+
+    def max_value(self, state, depth):
+        """ Helper function used in minimax algorithm.
+        Parameters
+            state : isolation.Board
+                An instance of the Isolation game `Board` class representing the
+                current game state
+            depth : int
+                Depth is an integer representing the maximum number of plies to
+                search in the game tree before aborting
+        Returns
+            (int) : utility value of the given state
+        """
+
+        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+        pass
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
