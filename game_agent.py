@@ -232,22 +232,6 @@ class MinimaxPlayer(IsolationPlayer):
         # utilValues = game.get_legal_moves()
         # return max( list(zip(legal_moves,utilValues)), key=itemgetter[1] )[0]
 
-    def min_value(self, state, depth):
-        """ Helper function used in minimax algorithm.
-        Parameters
-            state : isolation.Board
-                An instance of the Isolation game `Board` class representing the
-                current game state
-            depth : int
-                Depth is an integer representing the maximum number of plies to
-                search in the game tree before aborting
-        Returns
-            (int) : utility value of the given state
-        """
-
-        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-        pass
-
     def max_value(self, state, depth):
         """ Helper function used in minimax algorithm.
         Parameters
@@ -262,7 +246,37 @@ class MinimaxPlayer(IsolationPlayer):
         """
 
         # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-        pass
+
+        # If terminal state or depth has been reached
+        if len(game.get_legal_moves() == 1 or depth == 0):
+            return self.score(game, self)
+        v = float("inf")
+        for move in game.get_legal_moves():
+            v = max( v, min_value(forecast_move(move)), depth )
+        return v, depth-1
+
+    def min_value(self, state, depth):
+        """ Helper function used in minimax algorithm.
+        Parameters
+            state : isolation.Board
+                An instance of the Isolation game `Board` class representing the
+                current game state
+            depth : int
+                Depth is an integer representing the maximum number of plies to
+                search in the game tree before aborting
+        Returns
+            (int) : utility value of the given state
+        """
+
+        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
+        # If terminal state or depth has been reached
+        if len(game.get_legal_moves() == 1 or depth == 0):
+            return self.score(game, self)
+        v = float("inf")
+        for move in game.get_legal_moves():
+            v = min( v, max_value(forecast_move(move)), depth )
+        return v, depth-1
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
