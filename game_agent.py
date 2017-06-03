@@ -245,15 +245,18 @@ class MinimaxPlayer(IsolationPlayer):
             (int) : utility value of the given state
         """
 
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
         # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
         # If terminal state or depth has been reached
         if len(game.get_legal_moves() == 1 or depth == 0):
-            return self.score(game, self)
-        v = float("inf")
+            return self.score(game, self) # I think these params are incorrect
+        v = -1*float("inf")
         for move in game.get_legal_moves():
-            v = max( v, min_value(forecast_move(move)), depth )
-        return v, depth-1
+            v = max( v, min_value(forecast_move(move)), depth-1 )
+        return v
 
     def min_value(self, state, depth):
         """ Helper function used in minimax algorithm.
@@ -268,15 +271,18 @@ class MinimaxPlayer(IsolationPlayer):
             (int) : utility value of the given state
         """
 
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
         # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
         # If terminal state or depth has been reached
         if len(game.get_legal_moves() == 1 or depth == 0):
-            return self.score(game, self)
+            return self.score(game, self) # I think these params are incorrect
         v = float("inf")
         for move in game.get_legal_moves():
-            v = min( v, max_value(forecast_move(move)), depth )
-        return v, depth-1
+            v = min( v, max_value(forecast_move(move)), depth-1 )
+        return v
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
