@@ -216,6 +216,10 @@ class MinimaxPlayer(IsolationPlayer):
 
         return game.get_legal_moves()[0]
 
+        # From aima python code
+        # return argmax(game.get_legal_moves(),
+        #                 key=lamda move : min_value(game.forecast_move(move), depth-1)
+
         ### return move from legal_moves with max score from min_value(forecast_move(game, move))
         #
         # from operator import itemgetter
@@ -251,11 +255,12 @@ class MinimaxPlayer(IsolationPlayer):
         # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
         # If terminal state or depth has been reached
-        if len(game.get_legal_moves() == 1 or depth == 0):
+        if self.terminal_test(game) or depth == 0:
             return self.score(game, self) # I think these params are incorrect
-        v = -1*float("inf")
+
+        v = -float("inf")
         for move in game.get_legal_moves():
-            v = max( v, min_value(forecast_move(move)), depth-1 )
+            v = max( v, min_value(game.forecast_move(move), depth-1) )
         return v
 
     def min_value(self, state, depth):
@@ -277,12 +282,17 @@ class MinimaxPlayer(IsolationPlayer):
         # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
         # If terminal state or depth has been reached
-        if len(game.get_legal_moves() == 1 or depth == 0):
+        if self.terminal_test(game) or depth == 0:
             return self.score(game, self) # I think these params are incorrect
+
         v = float("inf")
         for move in game.get_legal_moves():
-            v = min( v, max_value(forecast_move(move)), depth-1 )
+            v = min( v, max_value(game.forecast_move(move), depth-1) )
         return v
+
+    # Test if game is in a terminal state
+    def terminal_test(self, state):
+        pass
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
