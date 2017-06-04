@@ -211,14 +211,67 @@ class MinimaxPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
+
+
+        def max_value(self, state, depth):
+            """ Helper function used in minimax algorithm.
+            Parameters
+                state : isolation.Board
+                    An instance of the Isolation game `Board` class representing the
+                    current game state
+                depth : int
+                    Depth is an integer representing the maximum number of plies to
+                    search in the game tree before aborting
+            Returns
+                (int) : utility value of the given state
+            """
+
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
+            # If terminal state or depth has been reached
+            if len(game.get_legal_moves()) == 0 or depth == 0:
+                return self.score(game, self) # I think these params are incorrect
+
+            v = float("-inf")
+            for move in game.get_legal_moves():
+                v = max( v, min_value(game.forecast_move(move), depth-1) )
+            return v
+
+        def min_value(self, state, depth):
+            """ Helper function used in minimax algorithm.
+            Parameters
+                state : isolation.Board
+                    An instance of the Isolation game `Board` class representing the
+                    current game state
+                depth : int
+                    Depth is an integer representing the maximum number of plies to
+                    search in the game tree before aborting
+            Returns
+                (int) : utility value of the given state
+            """
+
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
+            # If terminal state or depth has been reached
+            if len(game.get_legal_moves()) == 0 or depth == 0:
+                return self.score(game, self) # I think these params are incorrect
+
+            v = float("inf")
+            for move in game.get_legal_moves():
+                v = min( v, max_value(game.forecast_move(move), depth-1) )
+            return v
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        return game.get_legal_moves()[0]
-
-        # From aima python code
-        # return argmax(game.get_legal_moves(),
-        #                 key=lamda move : min_value(game.forecast_move(move), depth-1)
+        # legal_moves = game.get_legal_moves()[0]
+        # best_move = legal_moves[0]
 
         ### return move from legal_moves with max score from min_value(forecast_move(game, move))
         #
@@ -228,7 +281,6 @@ class MinimaxPlayer(IsolationPlayer):
         # scores = [min_value(forecast_move(game, move)) for move in legal_moves]
         # return max( list(zip(legal_moves,scores)), key=itemgetter[1] )[0]
 
-
         # from operator import itemgetter
         #
         # legal_moves = game.get_legal_moves()
@@ -236,63 +288,8 @@ class MinimaxPlayer(IsolationPlayer):
         # utilValues = game.get_legal_moves()
         # return max( list(zip(legal_moves,utilValues)), key=itemgetter[1] )[0]
 
-    def max_value(self, state, depth):
-        """ Helper function used in minimax algorithm.
-        Parameters
-            state : isolation.Board
-                An instance of the Isolation game `Board` class representing the
-                current game state
-            depth : int
-                Depth is an integer representing the maximum number of plies to
-                search in the game tree before aborting
-        Returns
-            (int) : utility value of the given state
-        """
-
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
-        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-        # If terminal state or depth has been reached
-        if self.terminal_test(game) or depth == 0:
-            return self.score(game, self) # I think these params are incorrect
-
-        v = -float("inf")
-        for move in game.get_legal_moves():
-            v = max( v, min_value(game.forecast_move(move), depth-1) )
-        return v
-
-    def min_value(self, state, depth):
-        """ Helper function used in minimax algorithm.
-        Parameters
-            state : isolation.Board
-                An instance of the Isolation game `Board` class representing the
-                current game state
-            depth : int
-                Depth is an integer representing the maximum number of plies to
-                search in the game tree before aborting
-        Returns
-            (int) : utility value of the given state
-        """
-
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
-        # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-        # If terminal state or depth has been reached
-        if self.terminal_test(game) or depth == 0:
-            return self.score(game, self) # I think these params are incorrect
-
-        v = float("inf")
-        for move in game.get_legal_moves():
-            v = min( v, max_value(game.forecast_move(move), depth-1) )
-        return v
-
-    # Test if game is in a terminal state
-    def terminal_test(self, state):
-        pass
+        # From aima python code
+        return argmax(game.get_legal_moves(), key=lamda move :      min_value(game.forecast_move(move), depth-1)
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
