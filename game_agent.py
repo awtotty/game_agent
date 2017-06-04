@@ -289,7 +289,7 @@ class MinimaxPlayer(IsolationPlayer):
         # return max( list(zip(legal_moves,utilValues)), key=itemgetter[1] )[0]
 
         # From aima python code
-        return argmax(game.get_legal_moves(), key=lamda move :      min_value(game.forecast_move(move), depth-1)
+        return max(game.get_legal_moves(), key=lambda m:      min_value(game.forecast_move(m), depth-1))
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
