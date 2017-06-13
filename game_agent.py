@@ -35,9 +35,7 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
-    # This is an evaluation heuristic that returns number of moves available to the player.
-
-    return float( len(game.get_legal_moves()) )
+    # Symmetry/equivalent boards, partitioning, reflect opponent moves over center
 
 
 def custom_score_2(game, player):
@@ -62,8 +60,9 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+
+    # Return #_my_moves - 2*#_opponent_moves
+    return float( len(game.get_legal_moves()) - 2*len(game.get_legal_moves(game.inactive_player)) )
 
 
 def custom_score_3(game, player):
@@ -88,8 +87,9 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
-    raise NotImplementedError
+
+    # Return #_my_moves
+    return float( len(game.get_legal_moves()) )
 
 
 class IsolationPlayer:
