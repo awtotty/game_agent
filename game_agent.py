@@ -363,5 +363,90 @@ class AlphaBetaPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # TODO: finish this function!
-        raise NotImplementedError
+
+        def max_value(self, state, depth, alpha, beta):
+            """ Helper function used in minimax algorithm.
+            Parameters
+                state : isolation.Board
+                    An instance of the Isolation game `Board` class representing the
+                    current game state
+                depth : int
+                    Depth is an integer representing the maximum number of plies to
+                    search in the game tree before aborting
+                alpha : float
+                    Alpha limits the lower bound of search on minimizing layers
+                beta : float
+                    Beta limits the upper bound of search on maximizing layers
+            Returns
+                (int) : utility value of the given state
+            """
+
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
+            # If terminal state or depth has been reached
+            if len(game.get_legal_moves()) < 1 or depth < 1:
+                return self.score(game, self)
+
+            v = float("-inf")
+            for move in game.get_legal_moves():
+                v = max( v, min_value(self, game.forecast_move(move), depth-1, alpha, beta) )
+                if v >= beta:
+                    return v
+                alpha = max(alpha, v)
+            return v
+
+        def min_value(self, state, depth, alpha, beta):
+            """ Helper function used in minimax algorithm.
+            Parameters
+                state : isolation.Board
+                    An instance of the Isolation game `Board` class representing the
+                    current game state
+                depth : int
+                    Depth is an integer representing the maximum number of plies to
+                    search in the game tree before aborting
+                alpha : float
+                    Alpha limits the lower bound of search on minimizing layers
+                beta : float
+                    Beta limits the upper bound of search on maximizing layers
+            Returns
+                (int) : utility value of the given state
+            """
+
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
+            # If terminal state or depth has been reached
+            if len(game.get_legal_moves()) < 1 or depth < 1:
+                return self.score(game, self)
+
+            v = float("inf")
+            for move in game.get_legal_moves():
+                v = min( v, max_value(self, game.forecast_move(move), depth-1, alpha, beta) )
+                if v <= alpha:
+                    return v
+                beta = min(beta, v)
+            return v
+
+
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
+
+        # From aima python code
+
+        best_score = float("-inf")
+        beta = float("inf")
+        best_move = None
+        for move in game.get_legal_moves():
+            v = min_value(self, game.forecast_move(move), depth-1, best_score, beta)
+            if v > best_score:
+                best_score = v
+                best_move = move
+        return best_move
+
+#        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1, alpha, beta))
+
