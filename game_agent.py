@@ -233,7 +233,7 @@ class MinimaxPlayer(IsolationPlayer):
 
             # If terminal state or depth has been reached
             if len(game.get_legal_moves()) < 1 or depth < 1:
-                return self.score(game, self) # I think these params are incorrect
+                return self.score(game, self)
 
             v = float("-inf")
             for move in game.get_legal_moves():
@@ -260,7 +260,7 @@ class MinimaxPlayer(IsolationPlayer):
 
             # If terminal state or depth has been reached
             if len(game.get_legal_moves()) < 1 or depth < 1:
-                return self.score(game, self) # I think these params are incorrect
+                return self.score(game, self)
 
             v = float("inf")
             for move in game.get_legal_moves():
