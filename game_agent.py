@@ -319,17 +319,15 @@ class AlphaBetaPlayer(IsolationPlayer):
         try:
             # The try/except block will automatically catch the exception
             # raised when the timer is about to expire.
-            return self.alphabeta(game, self.search_depth)
+            while (self.time_left() > 0):
+                best_move = self.alphabeta(game, self.search_depth) # Note: defaults: alpha=-inf, beta=inf
+                self.search_depth += 1
 
         except SearchTimeout:
             pass  # Handle any actions required after timeout as needed
 
         # Return the best move from the last completed search iteration
         return best_move
-
-
-        # TODO: finish this function!
-        raise NotImplementedError
 
     def alphabeta(self, game, depth, alpha=float("-inf"), beta=float("inf")):
         """Implement depth-limited minimax search with alpha-beta pruning as
