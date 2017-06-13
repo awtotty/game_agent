@@ -312,6 +312,22 @@ class AlphaBetaPlayer(IsolationPlayer):
         """
         self.time_left = time_left
 
+        # Initialize the best move so that this function returns something
+        # in case the search fails due to timeout
+        best_move = (-1, -1)
+
+        try:
+            # The try/except block will automatically catch the exception
+            # raised when the timer is about to expire.
+            return self.alphabeta(game, self.search_depth)
+
+        except SearchTimeout:
+            pass  # Handle any actions required after timeout as needed
+
+        # Return the best move from the last completed search iteration
+        return best_move
+
+
         # TODO: finish this function!
         raise NotImplementedError
 
@@ -437,16 +453,11 @@ class AlphaBetaPlayer(IsolationPlayer):
             raise SearchTimeout()
 
         # From aima python code
-
-        best_score = float("-inf")
-        beta = float("inf")
         best_move = None
         for move in game.get_legal_moves():
-            v = min_value(self, game.forecast_move(move), depth-1, best_score, beta)
-            if v > best_score:
-                best_score = v
+            v = min_value(self, game.forecast_move(move), depth-1, alpha, beta)
+            if v > alpha:
+                alpha = v
                 best_move = move
         return best_move
-
-#        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1, alpha, beta))
 
