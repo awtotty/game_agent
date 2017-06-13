@@ -34,10 +34,10 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # TODO: finish this function!
 
-    # player is the ai player, not opponent (i.e. max player)
-    raise NotImplementedError
+    # This is an evaluation heuristic that returns number of moves available to the player.
+
+    return float( len(game.get_legal_moves()) )
 
 
 def custom_score_2(game, player):
