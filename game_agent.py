@@ -271,6 +271,9 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
+        # For some reason, adding in the print changes the error in test 2...
+        # print( max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1)) )
+
         # From aima python code
         return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1))
 
