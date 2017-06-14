@@ -217,6 +217,7 @@ class MinimaxPlayer(IsolationPlayer):
                 testing.
         """
 
+        # TODO Test 2 is failing because minimax is evaluating _way_ too many nodes. Not sure why...
 
         def max_value(self, state, depth):
             """ Helper function used in minimax algorithm.
@@ -280,7 +281,7 @@ class MinimaxPlayer(IsolationPlayer):
         # print( max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1)) )
 
         # From aima python code
-        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1))
+        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth))
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
@@ -323,6 +324,10 @@ class AlphaBetaPlayer(IsolationPlayer):
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
         best_move = (-1, -1)
+
+        # TODO Test 7 is failing because alphabeta is only evaluating the current position.
+        # This is probably an issue with depth. Changing depth in the alphabeta function didn't fix it.
+        # Maybe the issue is in the while loop for iterative deepening?
 
         try:
             # The try/except block will automatically catch the exception
@@ -461,7 +466,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         # From aima python code
         best_move = None
         for move in game.get_legal_moves():
-            v = min_value(self, game.forecast_move(move), depth-1, alpha, beta)
+            v = min_value(self, game.forecast_move(move), depth, alpha, beta) # changed depth-1 to depth for test
             if v > alpha:
                 alpha = v
                 best_move = move
