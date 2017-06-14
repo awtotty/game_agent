@@ -37,6 +37,11 @@ def custom_score(game, player):
 
     # Symmetry/equivalent boards, partitioning, reflect opponent moves over center
 
+    # Symmetry for first 4 moves
+    # If total moves made less than or equal to 8:
+    # if game.height*game.width - game.get_blank_spaces() <= 8:
+
+
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
