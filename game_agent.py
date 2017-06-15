@@ -41,6 +41,20 @@ def custom_score(game, player):
     # If total moves made less than or equal to 8:
     # if game.height*game.width - game.get_blank_spaces() <= 8:
 
+    # Partitioning
+    def has_partition(board):
+        """
+        True if two edge nodes blocked such that:
+            1.
+        """
+
+        """
+        True
+        """
+
+    if has_partition(game):
+        return custom_score_1(game, player) # #_my_moves
+    return custom_score_2(game, player) # stay close to opponent
 
 
 def custom_score_2(game, player):
