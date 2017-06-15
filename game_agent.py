@@ -41,20 +41,16 @@ def custom_score(game, player):
     # If total moves made less than or equal to 8:
     # if game.height*game.width - game.get_blank_spaces() <= 8:
 
-    # Partitioning
-    def has_partition(board):
-        """
-        True if two edge nodes blocked such that:
-            1.
-        """
-
-        """
-        True
-        """
-
-    if has_partition(game):
-        return custom_score_1(game, player) # #_my_moves
-    return custom_score_2(game, player) # stay close to opponent
+    # If board has an odd number of squares, there are more "odd" squares than "even" squares, so try to choose those.
+    if (game.height*game.width) % 2 == 1:
+        # If sum of player coordinates is even => player is on "odd" numbered square
+        if sum( game.get_player_location(player) ) % 2 == 0:
+            return 1
+        else:
+            return 0
+    # If board has even number of squares, just stay close to opponent.
+    else:
+        return custom_score_2(game, player)
 
 
 def custom_score_2(game, player):
