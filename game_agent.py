@@ -45,9 +45,9 @@ def custom_score(game, player):
     if (game.height*game.width) % 2 == 1:
         # If sum of player coordinates is even => player is on "odd" numbered square
         if sum( game.get_player_location(player) ) % 2 == 0:
-            return 1
+            return 1.0
         else:
-            return 0
+            return 0.0
     # If board has even number of squares, just stay close to opponent.
     else:
         return custom_score_2(game, player)
