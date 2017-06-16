@@ -35,6 +35,8 @@ def custom_score(game, player):
         The heuristic value of the current game state to the specified player.
     """
 
+    # TODO Clean comments
+
     # Symmetry/equivalent boards, partitioning, reflect opponent moves over center
 
     # Symmetry for first 4 moves
@@ -338,11 +340,14 @@ class AlphaBetaPlayer(IsolationPlayer):
         # TODO Test 7 is failing because alphabeta is only evaluating the current position.
         # This is probably an issue with depth. Changing depth in the alphabeta function didn't fix it.
         # Maybe the issue is in the while loop for iterative deepening?
+        #
+        # Well, it doens't seem to be an issue with the iterative deepening. Same error after changing while
+        # condition to True...
 
         try:
             # The try/except block will automatically catch the exception
             # raised when the timer is about to expire.
-            while (self.time_left() > 0):
+            while True:  # (self.time_left() > 0):
                 best_move = self.alphabeta(game, self.search_depth) # Note: defaults: alpha=-inf, beta=inf
                 self.search_depth += 1
 
@@ -397,12 +402,9 @@ class AlphaBetaPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
-
 
         def max_value(self, state, depth, alpha, beta):
-            """ Helper function used in minimax algorithm.
+            """ Helper function used in alphabeta algorithm.
             Parameters
                 state : isolation.Board
                     An instance of the Isolation game `Board` class representing the
@@ -436,7 +438,7 @@ class AlphaBetaPlayer(IsolationPlayer):
             return v
 
         def min_value(self, state, depth, alpha, beta):
-            """ Helper function used in minimax algorithm.
+            """ Helper function used in alphabeta algorithm.
             Parameters
                 state : isolation.Board
                     An instance of the Isolation game `Board` class representing the
@@ -476,8 +478,8 @@ class AlphaBetaPlayer(IsolationPlayer):
         # From aima python code
         best_move = None
         for move in game.get_legal_moves():
-            v = min_value(self, game.forecast_move(move), depth, alpha, beta) # changed depth-1 to depth for test
-            if v > alpha:
+            v = max_value(self, game.forecast_move(move), depth, alpha, beta) # changed depth-1 to depth for test, changed min_val to max_val for test
+            if v >= alpha:
                 alpha = v
                 best_move = move
         return best_move
