@@ -250,7 +250,7 @@ class MinimaxPlayer(IsolationPlayer):
             # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
             # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
+            if depth == 0:
                 return self.score(game, self)
 
             v = float("-inf")
@@ -277,7 +277,7 @@ class MinimaxPlayer(IsolationPlayer):
             # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
             # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
+            if depth == 0:
                 return self.score(game, self)
 
             v = float("inf")
@@ -293,7 +293,7 @@ class MinimaxPlayer(IsolationPlayer):
         # print( max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1)) )
 
         # From aima python code
-        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth))
+        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1))
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
@@ -483,4 +483,3 @@ class AlphaBetaPlayer(IsolationPlayer):
                 alpha = v
                 best_move = move
         return best_move
-
