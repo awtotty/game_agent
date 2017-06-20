@@ -239,6 +239,8 @@ class MinimaxPlayer(IsolationPlayer):
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
+
             # Check if depth reached
             if depth == 0:
                 return self.score(game, self)
@@ -251,6 +253,8 @@ class MinimaxPlayer(IsolationPlayer):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
+
+            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
             # Check if depth reached
             if depth == 0:
