@@ -231,69 +231,49 @@ class MinimaxPlayer(IsolationPlayer):
 
         # TODO Test 2 is failing because minimax is evaluating _way_ too many nodes. Not sure why...
 
-        def max_value(self, state, depth):
-            """ Helper function used in minimax algorithm.
-            Parameters
-                state : isolation.Board
-                    An instance of the Isolation game `Board` class representing the
-                    current game state
-                depth : int
-                    Depth is an integer representing the maximum number of plies to
-                    search in the game tree before aborting
-            Returns
-                (int) : utility value of the given state
-            """
-
-            if self.time_left() < self.TIMER_THRESHOLD:
-                raise SearchTimeout()
-
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-            # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
-                return self.score(game, self)
-
-            v = float("-inf")
-            for move in game.get_legal_moves():
-                v = max( v, min_value(self, game.forecast_move(move), depth-1) )
-            return v
-
-        def min_value(self, state, depth):
-            """ Helper function used in minimax algorithm.
-            Parameters
-                state : isolation.Board
-                    An instance of the Isolation game `Board` class representing the
-                    current game state
-                depth : int
-                    Depth is an integer representing the maximum number of plies to
-                    search in the game tree before aborting
-            Returns
-                (int) : utility value of the given state
-            """
-
-            if self.time_left() < self.TIMER_THRESHOLD:
-                raise SearchTimeout()
-
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-            # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
-                return self.score(game, self)
-
-            v = float("inf")
-            for move in game.get_legal_moves():
-                v = min( v, max_value(self, game.forecast_move(move), depth-1) )
-            return v
-
-
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        # For some reason, adding in the print changes the error in test 2...
-        # print( max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth-1)) )
+        def max_value(self,game,depth):
+            # Check for timeout
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
 
-        # From aima python code
-        return max(game.get_legal_moves(), key=lambda m: min_value(self, game.forecast_move(m), depth))
+            # Check if depth reached
+            if depth == 0:
+                return self.score(game, self)
+            v = float("-inf")
+            for move in game.get_legal_moves():
+                v = max(v, min_value(self, game.forecast_move(move), depth-1))
+            return v
+
+        def min_value(self,game,depth):
+            # Check for timeout
+            if self.time_left() < self.TIMER_THRESHOLD:
+                raise SearchTimeout()
+
+            # Check if depth reached
+            if depth == 0:
+                return self.score(game,self)
+            v = float("inf")
+            for move in game.get_legal_moves():
+                v = min(v,max_value(self,game.forecast_move(move),depth-1))
+            return v
+
+
+        legal_moves = game.get_legal_moves()
+        if not legal_moves:
+            return (-1, -1)
+
+        best_move = (-1,-1)
+        best_score = float("-inf")
+
+        for move in legal_moves:
+            score = min_value(self,game.forecast_move(move),depth-1)
+            if score > best_score:
+                best_score = score
+                best_move = move
+        return best_move
 
 class AlphaBetaPlayer(IsolationPlayer):
     """Game-playing agent that chooses a move using iterative deepening minimax
@@ -483,4 +463,3 @@ class AlphaBetaPlayer(IsolationPlayer):
                 alpha = v
                 best_move = move
         return best_move
-
