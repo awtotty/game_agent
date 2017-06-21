@@ -229,8 +229,6 @@ class MinimaxPlayer(IsolationPlayer):
                 testing.
         """
 
-        # TODO Test 2 is failing because minimax is evaluating _way_ too many nodes. Not sure why...
-
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
@@ -238,8 +236,6 @@ class MinimaxPlayer(IsolationPlayer):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
-
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
             # Check if depth reached
             if depth == 0:
@@ -253,8 +249,6 @@ class MinimaxPlayer(IsolationPlayer):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
-
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
 
             # Check if depth reached
             if depth == 0:
@@ -386,33 +380,17 @@ class AlphaBetaPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
+        if self.time_left() < self.TIMER_THRESHOLD:
+            raise SearchTimeout()
 
         def max_value(self, state, depth, alpha, beta):
-            """ Helper function used in alphabeta algorithm.
-            Parameters
-                state : isolation.Board
-                    An instance of the Isolation game `Board` class representing the
-                    current game state
-                depth : int
-                    Depth is an integer representing the maximum number of plies to
-                    search in the game tree before aborting
-                alpha : float
-                    Alpha limits the lower bound of search on minimizing layers
-                beta : float
-                    Beta limits the upper bound of search on maximizing layers
-            Returns
-                (int) : utility value of the given state
-            """
-
+            # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-            # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
+            # Check if depth has been reached
+            if depth == 0:
                 return self.score(game, self)
-
             v = float("-inf")
             for move in game.get_legal_moves():
                 v = max( v, min_value(self, game.forecast_move(move), depth-1, alpha, beta) )
@@ -422,31 +400,13 @@ class AlphaBetaPlayer(IsolationPlayer):
             return v
 
         def min_value(self, state, depth, alpha, beta):
-            """ Helper function used in alphabeta algorithm.
-            Parameters
-                state : isolation.Board
-                    An instance of the Isolation game `Board` class representing the
-                    current game state
-                depth : int
-                    Depth is an integer representing the maximum number of plies to
-                    search in the game tree before aborting
-                alpha : float
-                    Alpha limits the lower bound of search on minimizing layers
-                beta : float
-                    Beta limits the upper bound of search on maximizing layers
-            Returns
-                (int) : utility value of the given state
-            """
-
+            # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
-            # Should use self.score attribute to find utility value so utility function updates for a specified evaluation heuristic.
-
-            # If terminal state or depth has been reached
-            if len(game.get_legal_moves()) < 1 or depth < 1:
+            # Check if depth has been reached
+            if depth == 0:
                 return self.score(game, self)
-
             v = float("inf")
             for move in game.get_legal_moves():
                 v = min( v, max_value(self, game.forecast_move(move), depth-1, alpha, beta) )
@@ -456,12 +416,14 @@ class AlphaBetaPlayer(IsolationPlayer):
             return v
 
 
-        if self.time_left() < self.TIMER_THRESHOLD:
-            raise SearchTimeout()
+        legal_moves = game.get_legal_moves()
+        if not legal_moves:
+            return (-1, -1)
 
-        # From aima python code
-        best_move = None
-        for move in game.get_legal_moves():
+        best_move = (-1, -1)
+        best_score = float("-inf")
+
+        for move in legal_moves:
             v = max_value(self, game.forecast_move(move), depth, alpha, beta) # changed depth-1 to depth for test, changed min_val to max_val for test
             if v >= alpha:
                 alpha = v
