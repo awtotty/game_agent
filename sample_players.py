@@ -288,9 +288,9 @@ if __name__ == "__main__":
     # move", "timeout", or "forfeit"
     winner, history, outcome = game.play()
     if winner == player1:
-        winner = "player1"
+        winning_player = "player1"
     else:
-        winner = "player2"
-    print("\nWinner: {}\nOutcome: {}".format(winner, outcome))
+        winning_player = "player2"
+    print("\nWinner: {}, {}\nOutcome: {}".format(winning_player, winner, outcome))
     print(game.to_string())
     print("Move history:\n{!s}".format(history))

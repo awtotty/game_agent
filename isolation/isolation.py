@@ -10,6 +10,7 @@ be available to project reviewers.
 import random
 import timeit
 from copy import copy
+import game_agent # Import to prevent timeout on play() as HumanPlayer
 
 TIME_LIMIT_MILLIS = 150
 
@@ -329,7 +330,7 @@ class Board(object):
             if curr_move is None:
                 curr_move = Board.NOT_MOVED
 
-            if move_end < 0:
+            if move_end < 0 and isinstance(self._active_player, game_agent.IsolationPlayer):
                 return self._inactive_player, move_history, "timeout"
 
             if curr_move not in legal_player_moves:
