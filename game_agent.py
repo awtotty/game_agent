@@ -87,7 +87,16 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return random.random(0,10)
+    # Open space with Manhattan distance
+    # Manhattan distance between two points
+    def m_distance(p1, p2):
+        components = tuple((abs(a-b) for a,b in zip(p1,p2)))
+        return sum(components)
+
+	# Sum of reciprocals of m_distance from player to each blank space
+	# The value of the sum is greater when more blanks are nearby
+    sum_of_distances = sum( [ 1/(m_distance(game.get_player_location(player), blank_space)) for blank_space in game.get_blank_spaces() ] )
+    return float(sum_of_distances)
 
 
 def custom_score_3(game, player):
@@ -112,7 +121,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return random.random(0,5)
+    return float( len(game.get_legal_moves()) - 2*len(game.get_legal_moves(game.inactive_player)) )
 
 
 class IsolationPlayer:
