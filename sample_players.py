@@ -259,7 +259,7 @@ if __name__ == "__main__":
     import game_agent
 
     # create an isolation board (by default 7x7)
-    player1 = AlphaBetaPlayer(score_fn=improved_score)
+    player1 = HumanPlayer()
     player2 = AlphaBetaPlayer(score_fn=game_agent.custom_score_2)
     game = Board(player1, player2)
 
