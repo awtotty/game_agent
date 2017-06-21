@@ -259,16 +259,16 @@ if __name__ == "__main__":
     import game_agent
 
     # create an isolation board (by default 7x7)
-    player2 = AlphaBetaPlayer(score_fn=improved_score)
-    player1 = AlphaBetaPlayer(score_fn=game_agent.custom_score)
+    player1 = AlphaBetaPlayer(score_fn=improved_score)
+    player2 = AlphaBetaPlayer(score_fn=game_agent.custom_score_2)
     game = Board(player1, player2)
 
-    # place player 1 on the board at row 2, column 3, then place player 2 on
-    # the board at row 0, column 5; display the resulting board state.  Note
-    # that the .apply_move() method changes the calling object in-place.
-    game.apply_move((2, 3))
-    game.apply_move((4, 3))
-    print(game.to_string())
+    # # place player 1 on the board at row 2, column 3, then place player 2 on
+    # # the board at row 0, column 5; display the resulting board state.  Note
+    # # that the .apply_move() method changes the calling object in-place.
+    # game.apply_move((2, 3))
+    # game.apply_move((4, 3))
+    # print(game.to_string())
 
     # players take turns moving on the board, so player1 should be next to move
     assert(player1 == game.active_player)
