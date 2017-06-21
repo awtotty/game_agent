@@ -34,7 +34,26 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # Open space with Manhattan distance
+    # Manhattan or mirror
+
+    # If player 1, pick center. If player two, mirror player 1 if possible
+    num_blank_spaces = len(game.get_blank_spaces())
+    # If first play
+    if (num_blank_spaces == game.width*game.height):
+        if game.get_player_location(player) == (game.height/2, game.width/2):
+            return float('inf')
+
+    # If second player (assumes an odd, square board)
+    # Returns the mirrored position of the tuple location
+    def mirror(location):
+        return tuple(x-y for x,y in zip((6,6),location))
+
+    if (num_blank_spaces % 2 == 0):
+        opponent_location = game.get_player_location(game.get_opponent(player))
+        if game.get_player_location(player) == mirror(opponent_location):
+            return float('inf')
+
+    # If all else fails, uses open space with Manhattan distance
     # Manhattan distance between two points
     def m_distance(p1, p2):
         components = tuple((abs(a-b) for a,b in zip(p1,p2)))
@@ -68,13 +87,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    # If player 1, pick center. If player two, mirror player 1 if possible
-    # If first play
-    # if (game.get_blank_spaces() == game.width*game.height):
-    #     if game.get_player_location(player) == (game.height/2, game.width/2):
-    #         return float('inf')
-    #
-    return custom_score_3(game, player)
+    return random.random(0,10)
 
 
 def custom_score_3(game, player):
@@ -99,9 +112,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-
-    # Return #_my_moves
-    return float( len(game.get_legal_moves()) )
+    return random.random(0,5)
 
 
 class IsolationPlayer:
