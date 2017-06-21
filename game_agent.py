@@ -69,12 +69,32 @@ def custom_score_2(game, player):
         The heuristic value of the current game state to the specified player.
     """
     # If player 1, pick center. If player two, mirror player 1 if possible
+    num_blank_spaces = len(game.get_blank_spaces())
     # If first play
-    # if (game.get_blank_spaces() == game.width*game.height):
-    #     if game.get_player_location(player) == (game.height/2, game.width/2):
-    #         return float('inf')
-    #
-    return custom_score_3(game, player)
+    if (num_blank_spaces == game.width*game.height):
+        if game.get_player_location(player) == (game.height/2, game.width/2):
+            return float('inf')
+
+    # If second player (assumes an odd, square board)
+    # Returns the mirrored position of the tuple location
+    def mirror(location):
+        return tuple(x-y for x,y in zip((6,6),location))
+
+    if (num_blank_spaces % 2 == 0):
+        opponent_location = game.get_player_location(game.get_opponent(player))
+        if game.get_player_location(player) == mirror(opponent_location):
+            return float('inf')
+
+    # If all else fails, uses open space with Manhattan distance
+    # Manhattan distance between two points
+    def m_distance(p1, p2):
+        components = tuple((abs(a-b) for a,b in zip(p1,p2)))
+        return sum(components)
+
+    # Sum of reciprocals of m_distance from player to each blank space
+    # The value of the sum is greater when more blanks are nearby
+    sum_of_distances = sum( [ 1/(m_distance(game.get_player_location(player), blank_space)) for blank_space in game.get_blank_spaces() ] )
+    return float(sum_of_distances)
 
 
 def custom_score_3(game, player):
