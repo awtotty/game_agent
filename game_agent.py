@@ -34,25 +34,16 @@ def custom_score(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
+    # Open space with Manhattan distance
+    # Manhattan distance between two points
+    def m_distance(p1, p2):
+        components = tuple((abs(a-b) for a,b in zip(p1,p2)))
+        return sum(components)
 
-    # TODO Clean comments
-
-    # Symmetry/equivalent boards, partitioning, reflect opponent moves over center
-
-    # Symmetry for first 4 moves
-    # If total moves made less than or equal to 8:
-    # if game.height*game.width - game.get_blank_spaces() <= 8:
-
-    # If board has an odd number of squares, there are more "odd" squares than "even" squares, so try to choose those.
-    if (game.height*game.width) % 2 == 1:
-        # If sum of player coordinates is even => player is on "odd" numbered square
-        if sum( game.get_player_location(player) ) % 2 == 0:
-            return 1.0
-        else:
-            return 0.0
-    # If board has even number of squares, just stay close to opponent.
-    else:
-        return custom_score_2(game, player)
+    # Sum of reciprocals of m_distance from player to each blank space
+    # The value of the sum is greater when more blanks are nearby
+    sum_of_distances = sum( [ 1/(m_distance(game.get_player_location(player), blank_space)) for blank_space in game.get_blank_spaces() ] )
+    return float(sum_of_distances)
 
 
 def custom_score_2(game, player):
@@ -77,9 +68,13 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-
-    # Return #_my_moves - 2*#_opponent_moves
-    return float( len(game.get_legal_moves()) - 2*len(game.get_legal_moves(game.inactive_player)) )
+    # If player 1, pick center. If player two, mirror player 1 if possible
+    # If first play
+    # if (game.get_blank_spaces() == game.width*game.height):
+    #     if game.get_player_location(player) == (game.height/2, game.width/2):
+    #         return float('inf')
+    #
+    return custom_score_3(game, player)
 
 
 def custom_score_3(game, player):
@@ -131,7 +126,7 @@ class IsolationPlayer:
         positive value large enough to allow the function to return before the
         timer expires.
     """
-    def __init__(self, search_depth=3, score_fn=custom_score_3, timeout=10.):
+    def __init__(self, search_depth=3, score_fn=custom_score, timeout=10.):
         self.search_depth = search_depth
         self.score = score_fn
         self.time_left = None
