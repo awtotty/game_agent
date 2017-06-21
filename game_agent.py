@@ -232,7 +232,7 @@ class MinimaxPlayer(IsolationPlayer):
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        def max_value(self,game,depth):
+        def max_value(self, game, depth):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
@@ -245,7 +245,7 @@ class MinimaxPlayer(IsolationPlayer):
                 v = max(v, min_value(self, game.forecast_move(move), depth-1))
             return v
 
-        def min_value(self,game,depth):
+        def min_value(self, game, depth):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
@@ -267,7 +267,7 @@ class MinimaxPlayer(IsolationPlayer):
         best_score = float("-inf")
 
         for move in legal_moves:
-            score = min_value(self,game.forecast_move(move),depth-1)
+            score = min_value(self, game.forecast_move(move), depth-1)
             if score > best_score:
                 best_score = score
                 best_move = move
@@ -314,13 +314,6 @@ class AlphaBetaPlayer(IsolationPlayer):
         # Initialize the best move so that this function returns something
         # in case the search fails due to timeout
         best_move = (-1, -1)
-
-        # TODO Test 7 is failing because alphabeta is only evaluating the current position.
-        # This is probably an issue with depth. Changing depth in the alphabeta function didn't fix it.
-        # Maybe the issue is in the while loop for iterative deepening?
-        #
-        # Well, it doens't seem to be an issue with the iterative deepening. Same error after changing while
-        # condition to True...
 
         try:
             # The try/except block will automatically catch the exception
@@ -380,36 +373,37 @@ class AlphaBetaPlayer(IsolationPlayer):
                 each helper function or else your agent will timeout during
                 testing.
         """
+
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
 
-        def max_value(self, state, depth, alpha, beta):
+        def max_value(self, game, depth, alpha, beta):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
-            # Check if depth has been reached
+            # Check if depth reached
             if depth == 0:
                 return self.score(game, self)
             v = float("-inf")
             for move in game.get_legal_moves():
-                v = max( v, min_value(self, game.forecast_move(move), depth-1, alpha, beta) )
+                v = max(v, min_value(self, game.forecast_move(move), depth-1, alpha, beta))
                 if v >= beta:
                     return v
                 alpha = max(alpha, v)
             return v
 
-        def min_value(self, state, depth, alpha, beta):
+        def min_value(self, game, depth, alpha, beta):
             # Check for timeout
             if self.time_left() < self.TIMER_THRESHOLD:
                 raise SearchTimeout()
 
-            # Check if depth has been reached
+            # Check if depth reached
             if depth == 0:
-                return self.score(game, self)
+                return self.score(game,self)
             v = float("inf")
             for move in game.get_legal_moves():
-                v = min( v, max_value(self, game.forecast_move(move), depth-1, alpha, beta) )
+                v = min(v, max_value(self,game.forecast_move(move), depth-1, alpha, beta))
                 if v <= alpha:
                     return v
                 beta = min(beta, v)
@@ -420,12 +414,12 @@ class AlphaBetaPlayer(IsolationPlayer):
         if not legal_moves:
             return (-1, -1)
 
-        best_move = (-1, -1)
+        best_move = (-1,-1)
         best_score = float("-inf")
 
         for move in legal_moves:
-            v = max_value(self, game.forecast_move(move), depth, alpha, beta) # changed depth-1 to depth for test, changed min_val to max_val for test
-            if v >= alpha:
-                alpha = v
+            score = min_value(self, game.forecast_move(move), depth-1, best_score, beta)
+            if score > best_score:
+                best_score = score
                 best_move = move
         return best_move
