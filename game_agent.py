@@ -87,7 +87,7 @@ def custom_score_2(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return random(0,10)
+    return random.random(0,10)
 
 
 def custom_score_3(game, player):
@@ -112,7 +112,7 @@ def custom_score_3(game, player):
     float
         The heuristic value of the current game state to the specified player.
     """
-    return random(0,5)
+    return random.random(0,5)
 
 
 class IsolationPlayer:
